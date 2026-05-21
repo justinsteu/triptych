@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; background: #f3edda; overflow: hidden; font-family: 'Inter', system-ui, sans-serif; }
+  .card {
+    width: 1200px; height: 630px;
+    background: radial-gradient(ellipse at 20% 30%, #fdf6df 0%, #f3edda 55%, #e8dfc1 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 70px 90px;
+  }
+  .kicker {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #8a6f3a;
+    margin-bottom: 20px;
+  }
+  .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 168px;
+    line-height: 0.95;
+    color: #2a1f10;
+    letter-spacing: -0.03em;
+    font-variation-settings: "opsz" 144;
+    margin-bottom: 28px;
+  }
+  .subtitle {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 400;
+    font-style: italic;
+    color: #5a4a2e;
+    font-variation-settings: "opsz" 96;
+    margin-bottom: 50px;
+    max-width: 760px;
+    line-height: 1.25;
+  }
+  .tiles {
+    display: flex;
+    gap: 12px;
+    position: absolute;
+    right: 90px;
+    top: 100px;
+    transform: rotate(6deg);
+  }
+  .tiles.row2 { top: 240px; right: 130px; transform: rotate(-3deg); }
+  .tiles.row3 { top: 380px; right: 95px; transform: rotate(8deg); }
+  .tile {
+    width: 88px; height: 88px;
+    background: #fff9e8;
+    border: 2px solid #c9b988;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 52px;
+    color: #2a1f10;
+    box-shadow: 0 4px 0 rgba(180,150,80,0.25), 0 8px 20px rgba(120,90,30,0.15);
+  }
+  .footer {
+    position: absolute;
+    bottom: 60px;
+    left: 90px;
+    right: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    color: #6a5530;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #2a1f10;
+    color: #f3edda;
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+  }
+  .badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: #f3c14b;
+    border-radius: 50%;
+  }
+  .dot { color: #c9b988; margin: 0 12px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="kicker">A daily word puzzle</div>
+    <h1 class="title">Triptych</h1>
+    <p class="subtitle">Three hidden words. One letter pool. Unscramble them all.</p>
+
+    <div class="tiles"><div class="tile">T</div><div class="tile">R</div><div class="tile">I</div></div>
+    <div class="tiles row2"><div class="tile">P</div><div class="tile">T</div><div class="tile">Y</div></div>
+    <div class="tiles row3"><div class="tile">C</div><div class="tile">H</div></div>
+
+    <div class="footer">
+      <span class="badge">NEW PUZZLE EVERY DAY</span>
+      <span><strong style="color:#2a1f10">triptych.game</strong></span>
+    </div>
+  </div>
+</body>
+</html>
