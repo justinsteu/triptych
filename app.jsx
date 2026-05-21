@@ -1767,7 +1767,13 @@ function App() {
     setStats(prev => ({ ...prev, totalHintsUsed: prev.totalHintsUsed + 1 }));
 
     if (nextHintNum === 1) {
-      setShowRhymes(true);
+      // Beginner: rhyme hint (descriptions are already shown free above the tray)
+      // Everyone else (normal/hard/custom): theme/description hint
+      if (mode === "free" && diff === "beginner") {
+        setShowRhymes(true);
+      } else {
+        setShowDescriptions(true);
+      }
     } else if (nextHintNum === 2) {
       setSlots(prevSlots => {
         const next = prevSlots.map(r => r.slice());
@@ -2187,13 +2193,21 @@ function App() {
           })}
         </div>
 
-        {/* Hint chip — shows the rhyme hint when the player has used hint #1.
-            Not shown in Daily (no hints) and the descriptions panel handles Beginner's free preview. */}
-        {showRhymes && !isDaily && (
+        {/* Hint chip — Beginner sees rhymes (hint #1), others see descriptions (hint #1).
+            Daily skipped (no hints); Beginner's description panel above tray is a free preview, so we suppress the description chip there. */}
+        {showRhymes && !isDaily && isBeginner && (
           <div className="hints-line">
             <span className="hint-chip">
               <Bulb size={12} />
               <span className="hint-chip-text">rhymes with {rhymeLine}</span>
+            </span>
+          </div>
+        )}
+        {showDescriptions && !isDaily && !isBeginner && (
+          <div className="hints-line">
+            <span className="hint-chip">
+              <Bulb size={12} />
+              <span className="hint-chip-text">{descriptionLine}</span>
             </span>
           </div>
         )}
