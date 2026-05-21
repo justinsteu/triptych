@@ -28,7 +28,7 @@ Three hidden words share a single letter pool. Unscramble them all — five atte
 No build tools required.
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/triptych.git
+git clone https://github.com/justinsteu/triptych.git
 cd triptych
 python3 -m http.server 8000
 # open http://localhost:8000
@@ -40,9 +40,7 @@ Any static server works — `npx serve`, `php -S`, etc.
 
 ### One-click to Netlify
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/YOUR-USERNAME/triptych)
-
-> Replace `YOUR-USERNAME` with your GitHub username after forking.
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/justinsteu/triptych)
 
 ### Manual
 
@@ -60,7 +58,7 @@ git init
 git add -A
 git commit -m "Triptych v1.0"
 git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/triptych.git
+git remote add origin https://github.com/justinsteu/triptych.git
 git push -u origin main
 ```
 
