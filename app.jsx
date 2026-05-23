@@ -926,8 +926,8 @@ const LS_PREFIX = "triptych:";
    Anonymous device id + fire-and-forget endpoints.
    Set ANALYTICS_URL to the deployed Worker URL to enable.
    Leave "" to disable (no requests are made). */
-const ANALYTICS_URL = ""; // e.g. "https://triptych-analytics.YOUR-SUBDOMAIN.workers.dev"
-const APP_VERSION = "v6-h";
+const ANALYTICS_URL = "https://triptych-analytics.justinsteu.workers.dev";
+const APP_VERSION = "v6-i";
 
 function getClientId() {
   try {

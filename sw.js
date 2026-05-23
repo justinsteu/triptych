@@ -1,5 +1,5 @@
 /* Triptych service worker — offline-first cache */
-const VERSION = "triptych-v6-2026-05-23-i";
+const VERSION = "triptych-v6-2026-05-23-j";
 const CORE = [
   "./",
   "./index.html",
