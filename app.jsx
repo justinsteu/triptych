@@ -921,6 +921,37 @@ function rhymeFor(word) {
    Computer preview, certain in-app browsers) block storage; every call is
    try/catched so a failure silently degrades to in-memory only. */
 const LS_PREFIX = "triptych:";
+
+/* ---------- Telemetry (pseudonymous) ----------
+   Anonymous device id + fire-and-forget endpoints.
+   Set ANALYTICS_URL to the deployed Worker URL to enable.
+   Leave "" to disable (no requests are made). */
+const ANALYTICS_URL = ""; // e.g. "https://triptych-analytics.YOUR-SUBDOMAIN.workers.dev"
+const APP_VERSION = "v6-h";
+
+function getClientId() {
+  try {
+    let id = localStorage.getItem(LS_PREFIX + "cid");
+    if (!id) {
+      id = (crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(16) + Math.random().toString(16).slice(2))).replace(/[^0-9a-f-]/gi, "");
+      localStorage.setItem(LS_PREFIX + "cid", id);
+    }
+    return id;
+  } catch { return "anon-" + Math.random().toString(16).slice(2, 18); }
+}
+
+function beacon(path, payload) {
+  if (!ANALYTICS_URL) return;
+  try {
+    const url = ANALYTICS_URL.replace(/\/$/, "") + path;
+    const body = JSON.stringify(payload);
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
+    } else {
+      fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {});
+    }
+  } catch {}
+}
 function safeGet(key, fallback) {
   try {
     if (typeof localStorage === "undefined") return fallback;
@@ -1410,6 +1441,7 @@ function App() {
   useEffect(() => { safeSet("daily", dailyState); }, [dailyState]);
 
   const scoredRef = useRef(false);
+  const gameStartRef = useRef(0);
 
   /* Active config — Daily / Custom override Diff */
   const cfg = mode === "daily" ? DAILY : mode === "custom" ? CUSTOM : DIFF[diff];
@@ -1445,6 +1477,12 @@ function App() {
     setShowDescriptions(m === "daily" || beginnerStart);
     setShowRhymes(false);
     scoredRef.current = false;
+    gameStartRef.current = Date.now();
+  }, []);
+
+  /* Telemetry: one DAU ping per page load (no-op if ANALYTICS_URL blank) */
+  useEffect(() => {
+    beacon("/api/ping", { clientId: getClientId() });
   }, []);
 
   /* Initial puzzle — check URL hash for shared custom puzzle first */
@@ -1657,6 +1695,26 @@ function App() {
   const finalizeWinLoss = useCallback((won, usedAttempts, finalHintCount) => {
     if (scoredRef.current) return;
     scoredRef.current = true;
+
+    /* Fire-and-forget telemetry (skipped automatically if ANALYTICS_URL is blank) */
+    try {
+      const timeSeconds = gameStartRef.current
+        ? Math.max(0, Math.round((Date.now() - gameStartRef.current) / 1000))
+        : 0;
+      beacon("/api/submit", {
+        clientId: getClientId(),
+        mode,
+        puzzleDate: mode === "daily" && puzzle ? puzzle.dateStr : undefined,
+        difficulty: mode === "free" ? diff : undefined,
+        attempts: usedAttempts,
+        won: !!won,
+        timeSeconds,
+        hintsUsed: finalHintCount,
+        clientTs: Date.now(),
+        appVersion: APP_VERSION,
+      });
+    } catch {}
+
     setStats(prev => {
       const played = prev.played + 1;
       const solved = prev.solved + (won ? 1 : 0);
@@ -1670,7 +1728,7 @@ function App() {
       return { ...prev, played, solved, streak, bestStreak,
                totalAttemptsOnSolves, totalHintsOnSolves, fastest };
     });
-  }, []);
+  }, [mode, puzzle, diff]);
 
   const submit = useCallback(() => {
     if (phase !== "playing" || !puzzle) return;
