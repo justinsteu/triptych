@@ -2344,6 +2344,13 @@ function App() {
         />
       )}
       <ToastChip msg={toast} />
+
+      <footer className="privacy-footer" role="contentinfo">
+        <span>
+          Triptych collects anonymous play stats (mode, attempts, time) tied to a random per-device ID.
+          No personal information is collected or stored.
+        </span>
+      </footer>
     </div>
   );
 }
